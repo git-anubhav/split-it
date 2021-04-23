@@ -1,6 +1,6 @@
 import TransactionList from "../components/TransactionList";
 
-const Dashboard = () => {
+const Dashboard: React.FC = () => {
   return (
     <>
       <TransactionList />

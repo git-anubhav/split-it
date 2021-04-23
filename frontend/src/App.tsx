@@ -1,11 +1,11 @@
 import Dashboard from "./pages/Dashboard";
 
-function App() {
+const App: React.FC = () => {
   return (
     <>
       <Dashboard />
     </>
   );
-}
+};
 
 export default App;

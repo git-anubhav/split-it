@@ -1,4 +1,4 @@
-const TransactionList = () => {
+const TransactionList: React.FC = () => {
   return <>Table</>;
 };
 
