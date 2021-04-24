@@ -9,10 +9,10 @@ const TransactionSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  paidFor: {
-    type: [{ name: String, amount: Number }],
-    required: true,
-  },
+  // paidFor: {
+  //   type: [{ name: String, amount: Number }],
+  //   required: true,
+  // },
 });
 
 const Transaction = mongoose.model("Transaction", TransactionSchema);

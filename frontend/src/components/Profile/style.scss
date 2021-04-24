@@ -1,0 +1,19 @@
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 30vh;
+  .profile-picture {
+    width: 80px;
+    border-radius: 50%;
+  }
+  .total-expense-details {
+    width: 200px;
+    display: flex;
+    justify-content: space-between;
+    .group-total {
+      text-align: right;
+    }
+  }
+}
