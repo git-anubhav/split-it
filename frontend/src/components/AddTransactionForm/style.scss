@@ -1,0 +1,13 @@
+.paid-for-checkboxes {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2rem 0 0;
+}
+.date-picker {
+  .react-date-picker__wrapper {
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid #ced4da;
+    color: #495057;
+  }
+}

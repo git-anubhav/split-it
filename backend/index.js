@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const app = express();
 const cors = require("cors");
 
-const TransactionModel = require("./models/Schema");
+const TransactionModel = require("./models/Transaction");
+const FriendModel = require("./models/Friend");
 
 app.use(express.json()); //middleware to read all requests as json
 app.use(cors());
@@ -16,22 +17,57 @@ mongoose.connect(
   }
 );
 
-app.post("/add", async (req, res) => {
+app.post("/add-transaction", async (req, res) => {
   const amount = parseInt(req.body.amount);
   const paidBy = req.body.paidBy;
+  const title = req.body.title;
+  const date = req.body.date;
+  const paidFor = req.body.paidFor;
+
   const transaction = new TransactionModel({
+    title: title,
     amount: amount,
     paidBy: paidBy,
-    // paidFor: [
-    //   { name: "Anike", amount: 50 },
-    //   { name: "Anubhav", amount: 50 },
-    // ],
+    date: date,
+    paidFor: paidFor,
   });
   try {
     await transaction.save();
+    res.send(transaction);
   } catch (err) {
-    console.log(err);
+    res.send(err);
   }
+});
+
+app.get("/all-transactions", async (req, res) => {
+  TransactionModel.find({}, (err, result) => {
+    if (err) {
+      res.send(err);
+    }
+    res.send(result);
+  });
+});
+
+app.post("/add-friend", async (req, res) => {
+  const name = req.body.name;
+  const friend = new FriendModel({
+    name: name,
+  });
+  try {
+    await friend.save();
+    res.send(friend);
+  } catch (err) {
+    res.send(err);
+  }
+});
+
+app.get("/all-friends", async (req, res) => {
+  FriendModel.find({}, (err, result) => {
+    if (err) {
+      res.send(err);
+    }
+    res.send(result);
+  });
 });
 
 app.listen(3001, () => {

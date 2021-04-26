@@ -1,16 +1,32 @@
-import { Fragment, useState } from "react";
+import { Fragment, useState, useEffect } from "react";
 import "./style.scss";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Dropdown } from "react-bootstrap";
 import axios from "axios";
+import DatePicker from "react-date-picker";
+
+interface FormStateInterface {
+  title: string;
+  amount: string;
+  date: Date;
+  paidBy: string;
+  paidFor: any[];
+}
 
 const AddTransactionForm: React.FC = () => {
-  const [formState, setFormState] = useState({
+  const [formState, setFormState] = useState<FormStateInterface>({
     title: "",
     amount: "",
-    date: "",
+    date: new Date(),
     paidBy: "",
-    paidFor: "",
+    paidFor: [],
   });
+  const [friendList, setFriendList] = useState([]);
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/all-friends").then((res) => {
+      setFriendList(res.data);
+    });
+  }, []);
 
   const handleChange = (e: any) => {
     setFormState({
@@ -19,9 +35,64 @@ const AddTransactionForm: React.FC = () => {
     });
   };
 
-  const handleSubmit = () => {
-    axios.post("http://localhost:3001/add", formState);
+  const handleDateChange = (date: Date) => {
+    setFormState({
+      ...formState,
+      date: date,
+    });
   };
+
+  const handleFriendSelect = (key: any) => {
+    setFormState({
+      ...formState,
+      paidBy: key,
+    });
+  };
+
+  const handlePaidFor = (e: any) => {
+    let checkedFriends = formState.paidFor;
+    let split = formState.amount
+      ? parseInt(formState.amount) / (checkedFriends.length + 1)
+      : 0;
+    for (let i = 0; i < checkedFriends.length; i++) {
+      checkedFriends[i].amount = split;
+    }
+    if (e.target.checked === true) {
+      checkedFriends.push({ name: e.target.value, amount: split });
+      setFormState({
+        ...formState,
+        paidFor: checkedFriends,
+      });
+    } else {
+      const index = checkedFriends.findIndex(
+        (obj) => obj.name === e.target.value
+      );
+      checkedFriends.splice(index, 1);
+      setFormState({
+        ...formState,
+        paidFor: checkedFriends,
+      });
+      split = formState.amount
+        ? parseInt(formState.amount) / checkedFriends.length
+        : 0;
+      for (let i = 0; i < checkedFriends.length; i++) {
+        checkedFriends[i].amount = split;
+      }
+    }
+  };
+
+  const getCheckboxIndex = (name: any) => {
+    return formState.paidFor[
+      formState.paidFor.findIndex((borrower) => {
+        return borrower.name === name;
+      })
+    ];
+  };
+
+  const handleSubmit = () => {
+    axios.post("http://localhost:3001/add-transaction", formState);
+  };
+
   return (
     <Fragment>
       <Form>
@@ -33,50 +104,76 @@ const AddTransactionForm: React.FC = () => {
             value={formState.title}
             name="title"
             onChange={handleChange}
+            required
           />
         </Form.Group>
 
         <Form.Group>
           <Form.Label>Amount</Form.Label>
           <Form.Control
-            type="text"
+            type="number"
             placeholder="Amount"
             name="amount"
             onChange={handleChange}
+            required
           />
         </Form.Group>
 
         <Form.Group>
           <Form.Label>Date</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Date"
-            name="date"
-            onChange={handleChange}
+          <br />
+          <DatePicker
+            className="date-picker"
+            clearIcon={null}
+            value={formState.date}
+            format="d/M/yyyy"
+            onChange={(date: any) => handleDateChange(date)}
           />
         </Form.Group>
 
         <Form.Group>
           <Form.Label>Paid By</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Paid By"
-            name="paidBy"
-            onChange={handleChange}
-          />
+          <Dropdown>
+            <Dropdown.Toggle variant="success" id="dropdown-basic">
+              {formState.paidBy === "" ? "Select" : formState.paidBy}
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+              {friendList.map((friend: any, index) => (
+                <Dropdown.Item
+                  key={friend._id}
+                  eventKey={friend.name}
+                  onSelect={handleFriendSelect}
+                >
+                  {friend.name}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
         </Form.Group>
 
-        <Form.Group>
+        <Form.Group controlId="formBasicCheckbox">
           <Form.Label>Paid For</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Paid For"
-            name="paidFor"
-            onChange={handleChange}
-          />
+          {friendList.map((friend: any, index: number) => (
+            <div key={friend._id} className="paid-for-checkboxes">
+              <Form.Check
+                value={friend.name}
+                id={`${index}`}
+                onChange={handlePaidFor}
+                type="checkbox"
+                label={friend.name}
+              />
+              <div>
+                Rs.
+                {getCheckboxIndex(friend.name)
+                  ? getCheckboxIndex(friend.name).amount.toFixed(2)
+                  : 0}
+              </div>
+            </div>
+          ))}
         </Form.Group>
 
-        <Button variant="primary" type="button" onClick={handleSubmit}>
+        <Button variant="primary" type="submit" onClick={handleSubmit}>
           Submit
         </Button>
       </Form>
