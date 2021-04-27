@@ -85,10 +85,10 @@ const PendingPayments: React.FC = () => {
         <tbody>
           {debtList.map((debt: any, index: any) => (
             <tr key={index}>
-              <td>
+              <td className="primary-info">
                 {debt.taker} Owes {debt.giver}
               </td>
-              <td>Rs.{debt.amount}</td>
+              <td className="primary-info">Rs.{debt.amount}</td>
             </tr>
           ))}
         </tbody>
