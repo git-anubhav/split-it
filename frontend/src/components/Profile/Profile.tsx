@@ -1,24 +1,14 @@
-import { Fragment, useState, useEffect } from "react";
-import axios from "axios";
+import { Fragment } from "react";
 import "./style.scss";
 
 const Profile: React.FC = () => {
-  const [itemsList, setItemsList] = useState([]);
-  const [groupTotal, setGroupTotal] = useState(0);
+  // const [itemsList, setItemsList] = useState([]);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:3001/all-transactions")
-      .then((res) => {
-        setItemsList(res.data);
-      })
-      .then((res) => {
-        let tempGroupTotal = 0;
-        itemsList.map((item: any) => (tempGroupTotal += item.amount));
-        setGroupTotal(tempGroupTotal);
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   axios.get("http://localhost:3001/all-transactions").then((res) => {
+  //     setItemsList(res.data);
+  //   });
+  // }, []);
 
   return (
     <Fragment>
@@ -34,11 +24,11 @@ const Profile: React.FC = () => {
         <div className="total-expense-details">
           <div>
             <div>My Total</div>
-            <div>Rs.21678</div>
+            <div>Rs.2165</div>
           </div>
           <div className="group-total">
             <div>Group Total</div>
-            <div>Rs.{groupTotal}</div>
+            <div>Rs.2165</div>
           </div>
         </div>
       </div>
