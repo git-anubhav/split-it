@@ -94,7 +94,8 @@ const PendingPayments: React.FC = () => {
       >
         <thead>
           <tr>
-            <th colSpan={2}>PENDING PAYMENTS</th>
+            <th>SETTLEMENTS</th>
+            <th className="text-align-right">AMOUNT</th>
           </tr>
         </thead>
         <tbody>
@@ -103,7 +104,9 @@ const PendingPayments: React.FC = () => {
               <td className="primary-info">
                 {debt.taker} Owes {debt.giver}
               </td>
-              <td className="primary-info">Rs.{debt.amount.toFixed(2)}</td>
+              <td className="primary-info text-align-right">
+                Rs.{debt.amount.toFixed(2)}
+              </td>
             </tr>
           ))}
         </tbody>
