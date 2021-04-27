@@ -1,4 +1,4 @@
-import { Table, Button } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import { Fragment, useState, useEffect } from "react";
 import axios from "axios";
 import { minCashFlow } from "../../algorithm/DebtSimplification";
@@ -43,6 +43,7 @@ const PendingPayments: React.FC = () => {
     if (itemsList.length > 0 && friendList.length > 0) {
       getSimplifiedDebt();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [itemsList, friendList]);
 
   const getSimplifiedDebt = () => {
