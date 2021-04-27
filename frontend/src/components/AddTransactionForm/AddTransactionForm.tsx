@@ -6,7 +6,7 @@ import DatePicker from "react-date-picker";
 
 interface FormStateInterface {
   title: string;
-  amount: string;
+  amount: number;
   date: Date;
   paidBy: string;
   paidFor: any[];
@@ -15,7 +15,7 @@ interface FormStateInterface {
 const AddTransactionForm: React.FC = () => {
   const [formState, setFormState] = useState<FormStateInterface>({
     title: "",
-    amount: "",
+    amount: 0,
     date: new Date(),
     paidBy: "",
     paidFor: [],
@@ -51,8 +51,8 @@ const AddTransactionForm: React.FC = () => {
 
   const handlePaidFor = (e: any) => {
     let checkedFriends = formState.paidFor;
-    let split = formState.amount
-      ? parseInt(formState.amount) / (checkedFriends.length + 1)
+    let split: number = formState.amount
+      ? formState.amount / (checkedFriends.length + 1)
       : 0;
     for (let i = 0; i < checkedFriends.length; i++) {
       checkedFriends[i].amount = split;
@@ -72,9 +72,7 @@ const AddTransactionForm: React.FC = () => {
         ...formState,
         paidFor: checkedFriends,
       });
-      split = formState.amount
-        ? parseInt(formState.amount) / checkedFriends.length
-        : 0;
+      split = formState.amount ? formState.amount / checkedFriends.length : 0;
       for (let i = 0; i < checkedFriends.length; i++) {
         checkedFriends[i].amount = split;
       }
@@ -89,8 +87,21 @@ const AddTransactionForm: React.FC = () => {
     ];
   };
 
-  const handleSubmit = () => {
-    axios.post("http://localhost:3001/add-transaction", formState);
+  const handleSubmit = (e: any) => {
+    let roundedFormState = formState;
+    roundedFormState.amount = 0;
+    for (let i = 0; i < formState.paidFor.length; i++) {
+      roundedFormState.amount += parseFloat(
+        formState.paidFor[i].amount.toFixed(2)
+      );
+    }
+    for (let i = 0; i < formState.paidFor.length; i++) {
+      roundedFormState.paidFor[i].amount = roundedFormState.paidFor[
+        i
+      ].amount.toFixed(2);
+    }
+    console.log(roundedFormState);
+    axios.post("http://localhost:3001/add-transaction", roundedFormState);
   };
 
   return (
