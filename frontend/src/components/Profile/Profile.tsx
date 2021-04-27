@@ -1,4 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
+import { Dropdown } from "react-bootstrap";
 import "./style.scss";
 import axios from "axios";
 
@@ -17,9 +18,16 @@ interface PaidForInterface {
   name: String;
   amount: number;
 }
+interface FriendInterface {
+  _id: String;
+  name: String;
+  _v: number;
+}
 
 const Profile: React.FC = () => {
   const [itemsList, setItemsList] = useState<Array<ItemsInterface>>([]);
+  const [friendList, setFriendList] = useState<Array<FriendInterface>>([]);
+  const [user, setUser] = useState("");
   const [groupTotal, setGroupTotal] = useState(0);
   const [selfTotal, setSelfTotal] = useState(0);
 
@@ -27,12 +35,15 @@ const Profile: React.FC = () => {
     axios.get("http://localhost:3001/all-transactions").then((res) => {
       setItemsList(res.data);
     });
+    axios.get("http://localhost:3001/all-friends").then((res) => {
+      setFriendList(res.data);
+    });
   }, []);
 
   useEffect(() => {
     setGroupTotal(findGroupTotal(itemsList));
     setSelfTotal(findSelfTotal(itemsList));
-  }, [itemsList]);
+  }, [itemsList, user]);
 
   const findGroupTotal = (arr: any[]) => {
     let tempGroupTotal = 0;
@@ -46,12 +57,16 @@ const Profile: React.FC = () => {
     let tempSelfTotal = 0;
     for (let i = 0; i < arr.length; i++) {
       for (let j = 0; j < arr[i].paidFor.length; j++) {
-        if (arr[i].paidFor[j].name === "Anubhav") {
+        if (arr[i].paidFor[j].name === user) {
           tempSelfTotal += arr[i].paidFor[j].amount;
         }
       }
     }
     return tempSelfTotal;
+  };
+
+  const handleUserSelect = (key: any) => {
+    setUser(key);
   };
 
   return (
@@ -64,7 +79,23 @@ const Profile: React.FC = () => {
             className="profile-picture"
           />
         </div>
-        <div>Anubhav</div>
+        <Dropdown>
+          <Dropdown.Toggle variant="primary" id="dropdown-basic">
+            {user === "" ? "Select User" : user}
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu>
+            {friendList.map((friend: any, index) => (
+              <Dropdown.Item
+                key={friend._id}
+                eventKey={friend.name}
+                onSelect={handleUserSelect}
+              >
+                {friend.name}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
         <div className="total-expense-details">
           <div>
             <div>My Total</div>
