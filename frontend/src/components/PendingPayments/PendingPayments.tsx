@@ -32,12 +32,26 @@ const PendingPayments: React.FC = () => {
 
   useEffect(() => {
     axios.get("http://localhost:3001/all-transactions").then((res) => {
-      setItemsList(res.data);
+      setItemsList(getRoundedData(res.data));
     });
     axios.get("http://localhost:3001/all-friends").then((res) => {
       setFriendList(res.data);
     });
   }, []);
+
+  const getRoundedData = (data: any) => {
+    let roundedList = data;
+    for (let i = 0; i < roundedList.length; i++) {
+      roundedList[i].amount = 0;
+    }
+    for (let i = 0; i < roundedList.length; i++) {
+      for (let j = 0; j < roundedList[i].paidFor.length; j++) {
+        roundedList[i].amount += roundedList[i].paidFor[j].amount;
+      }
+    }
+    console.log(roundedList);
+    return roundedList;
+  };
 
   useEffect(() => {
     if (itemsList.length > 0 && friendList.length > 0) {
@@ -89,7 +103,7 @@ const PendingPayments: React.FC = () => {
               <td className="primary-info">
                 {debt.taker} Owes {debt.giver}
               </td>
-              <td className="primary-info">Rs.{debt.amount}</td>
+              <td className="primary-info">Rs.{debt.amount.toFixed(2)}</td>
             </tr>
           ))}
         </tbody>

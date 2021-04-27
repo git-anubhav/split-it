@@ -35,7 +35,7 @@ const TransactionList: React.FC = () => {
                 <div className="secondary-info">Paid By: {item.paidBy}</div>
               </td>
               <td className="text-align-right">
-                <div className="primary-info">Rs.{item.amount}</div>
+                <div className="primary-info">Rs.{item.amount.toFixed(2)}</div>
                 <div className="secondary-info">
                   {item.date
                     ? item.date

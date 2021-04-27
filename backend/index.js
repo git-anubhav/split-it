@@ -18,7 +18,7 @@ mongoose.connect(
 );
 
 app.post("/add-transaction", async (req, res) => {
-  const amount = parseInt(req.body.amount);
+  const amount = req.body.amount;
   const paidBy = req.body.paidBy;
   const title = req.body.title;
   const date = req.body.date;

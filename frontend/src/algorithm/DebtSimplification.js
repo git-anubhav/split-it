@@ -1,6 +1,26 @@
+function getMin(arr) {
+  let minIndex = 0;
+  for (let i = 1; i < arr.length; i++) {
+    if (arr[i] < arr[minIndex]) {
+      minIndex = i;
+    }
+  }
+  return minIndex;
+}
+
+function getMax(arr) {
+  let minIndex = 0;
+  for (let i = 1; i < arr.length; i++) {
+    if (arr[i] > arr[minIndex]) {
+      minIndex = i;
+    }
+  }
+  return minIndex;
+}
+
 export function minCashFlow(net_worth, friends, debts) {
-  let maxCredit = net_worth.indexOf(Math.max(...net_worth)),
-    mxDebit = net_worth.indexOf(Math.min(...net_worth));
+  let maxCredit = getMax(net_worth),
+    mxDebit = getMin(net_worth);
 
   if (net_worth[maxCredit] === 0 && net_worth[mxDebit] === 0) {
     return debts;
