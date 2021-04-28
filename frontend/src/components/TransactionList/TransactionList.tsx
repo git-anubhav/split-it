@@ -12,10 +12,8 @@ const TransactionList: React.FC = () => {
     });
   }, []);
 
-  const deleteTransaction = (_id:any): any =>{
-    console.log("hi");
-    
-    console.log("_id",_id);
+  const deleteTransaction = (_id:any):any =>{
+    console.log(_id);
     
     // axios.delete(`http://localhost:3001/all-transactions/${_id}`)
     //   .then((res) => {
@@ -61,9 +59,8 @@ const TransactionList: React.FC = () => {
                 </div>
               </td>
               <td className="text-align-right">
-                <button type="button" buttonId={item._id}
-                  //onClick={console.log(document.querySelector("tr")?.getAttribute("key"))} 
-                  className="btn btn-danger">Delete</button>
+               {/* <DeleteButton _id={item._id} /> */}
+               <button type="button"  onClick={deleteTransaction(item._id ? item._id : "aikdhviavdi")}  className="btn btn-danger">Delete</button>
               </td>
             </tr>
           ))}
