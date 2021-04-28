@@ -14,14 +14,13 @@ const TransactionList: React.FC = () => {
   }, []);
 
   const deleteTransaction = (_id: any): any => {
-    axios
-      .delete(`http://localhost:3001/all-transactions/${_id}`)
+    axios.delete(`http://localhost:3001/delete-transaction/${_id}`)
       .then((res) => {
         axios.get("http://localhost:3001/all-transactions").then((res) => {
-          setItemsList(res.data);
+        setItemsList(res.data);
         });
-      })
-      .catch((err) => console.log(err));
+      })  
+      .catch((err) =>  console.log(err))
   };
 
   return (
