@@ -30,6 +30,11 @@ export function minCashFlow(net_worth, friends, debts) {
   net_worth[maxCredit] -= min;
   net_worth[mxDebit] += min;
 
+  net_worth[maxCredit] = parseFloat(
+    parseFloat(net_worth[maxCredit]).toFixed(2)
+  );
+  net_worth[mxDebit] = parseFloat(parseFloat(net_worth[mxDebit]).toFixed(2));
+
   debts.push({
     taker: friends[mxDebit].name,
     giver: friends[maxCredit].name,

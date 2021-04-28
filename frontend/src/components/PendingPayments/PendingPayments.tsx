@@ -49,7 +49,7 @@ const PendingPayments: React.FC = () => {
         roundedList[i].amount += roundedList[i].paidFor[j].amount;
       }
     }
-    console.log(roundedList);
+    // console.log(roundedList);
     return roundedList;
   };
 
@@ -72,10 +72,12 @@ const PendingPayments: React.FC = () => {
       for (let j = 0; j < itemsList.length; j++) {
         if (itemsList[j].paidBy === friendList[i].name) {
           arr[i] = arr[i] + itemsList[j].amount;
+          arr[i] = parseFloat(arr[i].toFixed(2));
         }
         for (let k = 0; k < itemsList[j].paidFor.length; k++) {
           if (itemsList[j].paidFor[k].name === friendList[i].name) {
-            arr[i] = arr[i] - itemsList[j].paidFor[k].amount;
+            arr[i] -= itemsList[j].paidFor[k].amount;
+            arr[i] = parseFloat(arr[i].toFixed(2));
           }
         }
       }
@@ -94,7 +96,8 @@ const PendingPayments: React.FC = () => {
       >
         <thead>
           <tr>
-            <th colSpan={2}>PENDING PAYMENTS</th>
+            <th>SETTLEMENTS</th>
+            <th className="text-align-right">AMOUNT</th>
           </tr>
         </thead>
         <tbody>
@@ -103,7 +106,9 @@ const PendingPayments: React.FC = () => {
               <td className="primary-info">
                 {debt.taker} Owes {debt.giver}
               </td>
-              <td className="primary-info">Rs.{debt.amount.toFixed(2)}</td>
+              <td className="primary-info text-align-right">
+                Rs.{debt.amount.toFixed(2)}
+              </td>
             </tr>
           ))}
         </tbody>

@@ -89,12 +89,6 @@ const AddTransactionForm: React.FC = () => {
 
   const handleSubmit = (e: any) => {
     let roundedFormState = formState;
-    roundedFormState.amount = 0;
-    for (let i = 0; i < formState.paidFor.length; i++) {
-      roundedFormState.amount += parseFloat(
-        formState.paidFor[i].amount.toFixed(2)
-      );
-    }
     for (let i = 0; i < formState.paidFor.length; i++) {
       roundedFormState.paidFor[i].amount = roundedFormState.paidFor[
         i
