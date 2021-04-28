@@ -100,11 +100,11 @@ const Profile: React.FC = () => {
         <div className="total-expense-details">
           <div>
             <div>My Total</div>
-            <div>Rs.{selfTotal}</div>
+            <div>Rs.{selfTotal.toFixed(2)}</div>
           </div>
           <div className="group-total">
             <div>Group Total</div>
-            <div>Rs.{groupTotal}</div>
+            <div>Rs.{groupTotal.toFixed(2)}</div>
           </div>
         </div>
       </div>
