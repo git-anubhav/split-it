@@ -1,4 +1,4 @@
-import { Table } from "react-bootstrap";
+import { Table, Button } from "react-bootstrap";
 import { Fragment, useState, useEffect } from "react";
 import axios from "axios";
 import "./style.scss";
@@ -12,16 +12,16 @@ const TransactionList: React.FC = () => {
     });
   }, []);
 
-  const deleteTransaction = (_id:any):any =>{
+  const deleteTransaction = (_id: any): any => {
     console.log(_id);
-    
+
     // axios.delete(`http://localhost:3001/all-transactions/${_id}`)
     //   .then((res) => {
     //     console.log(res);
-        
+
     //   })
     //   .catch((err) =>  console.log(err))
-  }
+  };
 
   return (
     <Fragment>
@@ -59,8 +59,16 @@ const TransactionList: React.FC = () => {
                 </div>
               </td>
               <td className="text-align-right">
-               {/* <DeleteButton _id={item._id} /> */}
-               <button type="button"  onClick={deleteTransaction(item._id ? item._id : "aikdhviavdi")}  className="btn btn-danger">Delete</button>
+                {/* <DeleteButton _id={item._id} /> */}
+                <Button
+                  type="button"
+                  onClick={() =>
+                    deleteTransaction(item._id ? item._id : "aikdhviavdi")
+                  }
+                  className="btn btn-danger"
+                >
+                  Delete
+                </Button>
               </td>
             </tr>
           ))}
