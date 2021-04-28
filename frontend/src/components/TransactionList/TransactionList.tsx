@@ -12,6 +12,19 @@ const TransactionList: React.FC = () => {
     });
   }, []);
 
+  const deleteTransaction = (_id:any): any =>{
+    console.log("hi");
+    
+    console.log("_id",_id);
+    
+    // axios.delete(`http://localhost:3001/all-transactions/${_id}`)
+    //   .then((res) => {
+    //     console.log(res);
+        
+    //   })
+    //   .catch((err) =>  console.log(err))
+  }
+
   return (
     <Fragment>
       <Table
@@ -25,6 +38,7 @@ const TransactionList: React.FC = () => {
           <tr>
             <th>TRANSACTIONS</th>
             <th className="text-align-right">AMOUNT</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -45,6 +59,11 @@ const TransactionList: React.FC = () => {
                         .join("/")
                     : ""}
                 </div>
+              </td>
+              <td className="text-align-right">
+                <button type="button" buttonId={item._id}
+                  //onClick={console.log(document.querySelector("tr")?.getAttribute("key"))} 
+                  className="btn btn-danger">Delete</button>
               </td>
             </tr>
           ))}
