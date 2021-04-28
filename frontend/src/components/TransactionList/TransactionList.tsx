@@ -1,4 +1,5 @@
-import { Table, Button } from "react-bootstrap";
+import { Table } from "react-bootstrap";
+import { Trash } from "react-bootstrap-icons";
 import { Fragment, useState, useEffect } from "react";
 import axios from "axios";
 import "./style.scss";
@@ -58,17 +59,13 @@ const TransactionList: React.FC = () => {
                     : ""}
                 </div>
               </td>
-              <td className="text-align-right">
-                {/* <DeleteButton _id={item._id} /> */}
-                <Button
-                  type="button"
-                  onClick={() =>
-                    deleteTransaction(item._id)
-                  }
-                  className="btn btn-danger"
+              <td className="text-align-center">
+                <div
+                  className="cursor-pointer delete-icon-div"
+                  onClick={item._id && (() => deleteTransaction(item._id))}
                 >
-                  Delete
-                </Button>
+                  <Trash size={20} />
+                </div>
               </td>
             </tr>
           ))}
