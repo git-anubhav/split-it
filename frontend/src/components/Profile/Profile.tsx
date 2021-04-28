@@ -43,6 +43,7 @@ const Profile: React.FC = () => {
   useEffect(() => {
     setGroupTotal(findGroupTotal(itemsList));
     setSelfTotal(findSelfTotal(itemsList));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [itemsList, user]);
 
   const findGroupTotal = (arr: any[]) => {
