@@ -16,7 +16,6 @@ const TransactionList: React.FC = () => {
   const deleteTransaction = (_id: any): any => {
     axios.delete(`http://localhost:3001/delete-transaction/${_id}`)
       .then((res) => {
-        console.log("deleted transaction");
         axios.get("http://localhost:3001/all-transactions").then((res) => {
         setItemsList(res.data);
         });
