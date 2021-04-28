@@ -72,16 +72,15 @@ app.get("/all-friends", async (req, res) => {
 
 app.delete("/all-transactions/:id", async (req,res)=>{
     const { id } = req.params;
-    console.log(id);
-    // if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
-
-    // await TransactionModel.findByIdAndRemove(id,(err,result)=>{
-    //   if(err){
-    //     res.status(400).send(err);
-    //   }else{
-    //     res.send(result);
-    //   }
-    // });
+    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No transaction with id: ${id}`);
+    mongoose.set('useFindAndModify', false);
+    await TransactionModel.findByIdAndRemove(id,(err,result)=>{
+      if(err){
+        res.status(400).send(err);
+      }else{
+        res.send(result);
+      }
+    });
 
     // res.json({ message: "Post deleted successfully." });
 });

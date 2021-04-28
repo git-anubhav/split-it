@@ -13,14 +13,14 @@ const TransactionList: React.FC = () => {
   }, []);
 
   const deleteTransaction = (_id: any): any => {
-    console.log(_id);
-
-    // axios.delete(`http://localhost:3001/all-transactions/${_id}`)
-    //   .then((res) => {
-    //     console.log(res);
-
-    //   })
-    //   .catch((err) =>  console.log(err))
+    axios.delete(`http://localhost:3001/all-transactions/${_id}`)
+      .then((res) => {
+        console.log("deleted transaction");
+        axios.get("http://localhost:3001/all-transactions").then((res) => {
+        setItemsList(res.data);
+    });
+      })  
+      .catch((err) =>  console.log(err))
   };
 
   return (
@@ -63,7 +63,7 @@ const TransactionList: React.FC = () => {
                 <Button
                   type="button"
                   onClick={() =>
-                    deleteTransaction(item._id ? item._id : "aikdhviavdi")
+                    deleteTransaction(item._id)
                   }
                   className="btn btn-danger"
                 >
